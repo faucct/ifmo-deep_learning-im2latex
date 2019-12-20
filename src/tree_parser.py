@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+from typing import List
+
+
 class Visitor:
     def visit_list(self, elements):
         for element in elements:
@@ -56,58 +60,63 @@ class AllVisitor(Visitor):
         self.visit_list(math_choice.script_script)
 
 
-class Symbol:
-    def __init__(self, symbol):
-        self.symbol = symbol
+class Element:
+    def visit(self, visitor):
+        raise NotImplementedError()
+
+
+@dataclass(frozen=True)
+class Symbol(Element):
+    symbol: bytes
 
     def visit(self, visitor):
         visitor.visit_symbol(self)
 
 
-class WithChildren:
-    def __init__(self, header, children):
-        self.header = header
-        self.children = children
+@dataclass(frozen=True)
+class WithChildren(Element):
+    header: bytes
+    children: List[Element]
 
     def visit(self, visitor):
         visitor.visit_with_children(self)
 
 
-class SuperScripted:
-    def __init__(self, element, elements):
-        self.element = element
-        self.elements = elements
+@dataclass(frozen=True)
+class SuperScripted(Element):
+    element: Element
+    elements: List[Element]
 
     def visit(self, visitor):
         visitor.visit_super_scripted(self)
 
 
-class SubScripted:
-    def __init__(self, element, elements):
-        self.element = element
-        self.elements = elements
+@dataclass(frozen=True)
+class SubScripted(Element):
+    element: Element
+    elements: List[Element]
 
     def visit(self, visitor):
         visitor.visit_sub_scripted(self)
 
 
-class Fraction:
-    def __init__(self, header, up, down):
-        self.header = header
-        self.up = up
-        self.down = down
+@dataclass(frozen=True)
+class Fraction(Element):
+    header: bytes
+    up: List[Element]
+    down: List[Element]
 
     def visit(self, visitor):
         visitor.visit_fraction(self)
 
 
-class MathChoice:
-    def __init__(self, header, display, text, script, script_script):
-        self.header = header
-        self.display = display
-        self.text = text
-        self.script = script
-        self.script_script = script_script
+@dataclass(frozen=True)
+class MathChoice(Element):
+    header: bytes
+    display: List[Element]
+    text: List[Element]
+    script: List[Element]
+    script_script: List[Element]
 
     def visit(self, visitor):
         visitor.visit_math_choice(self)
