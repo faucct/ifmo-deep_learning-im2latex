@@ -102,6 +102,6 @@ def iter_tree_lines(lines):
             tree = []
             denominator = []
         else:
-            if line.endswith((b'\\fam0 \n', b'\\fam1 \n', b'\\fam2 \n', b'\\fam3 \n', b'\\fam4 \n')):
+            if line.endswith(b' \n') and not line.endswith(b'  \n'):
                 assert next(lines) == b'\n'
             tree.append(line)
