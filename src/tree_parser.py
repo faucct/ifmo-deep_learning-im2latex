@@ -1,6 +1,67 @@
+class Visitor:
+    def visit_list(self, elements):
+        for element in elements:
+            element.visit(self)
+
+    def visit_symbol(self, symbol):
+        pass
+
+    def visit_with_children(self, with_children):
+        pass
+
+    def visit_super_scripted(self, super_scripted):
+        pass
+
+    def visit_sub_scripted(self, sub_scripted):
+        pass
+
+    def visit_fraction(self, fraction):
+        pass
+
+    def visit_math_choice(self, math_choice):
+        pass
+
+
+class AllVisitor(Visitor):
+    def __init__(self, visitor):
+        self.visitor = visitor
+
+    def visit_symbol(self, symbol):
+        self.visitor.visit_symbol(symbol)
+
+    def visit_with_children(self, with_children):
+        self.visitor.visit_with_children(with_children)
+        self.visit_list(with_children.children)
+
+    def visit_super_scripted(self, super_scripted):
+        self.visitor.visit_super_scripted(super_scripted)
+        super_scripted.element.visit(self)
+        self.visit_list(super_scripted.elements)
+
+    def visit_sub_scripted(self, sub_scripted):
+        self.visitor.visit_sub_scripted(sub_scripted)
+        sub_scripted.element.visit(self)
+        self.visit_list(sub_scripted.elements)
+
+    def visit_fraction(self, fraction):
+        self.visitor.visit_fraction(fraction)
+        self.visit_list(fraction.up)
+        self.visit_list(fraction.down)
+
+    def visit_math_choice(self, math_choice):
+        self.visitor.visit_math_choice(math_choice)
+        self.visit_list(math_choice.display)
+        self.visit_list(math_choice.text)
+        self.visit_list(math_choice.script)
+        self.visit_list(math_choice.script_script)
+
+
 class Symbol:
     def __init__(self, symbol):
         self.symbol = symbol
+
+    def visit(self, visitor):
+        visitor.visit_symbol(self)
 
 
 class WithChildren:
@@ -8,11 +69,17 @@ class WithChildren:
         self.header = header
         self.children = children
 
+    def visit(self, visitor):
+        visitor.visit_with_children(self)
+
 
 class SuperScripted:
     def __init__(self, element, elements):
         self.element = element
         self.elements = elements
+
+    def visit(self, visitor):
+        visitor.visit_super_scripted(self)
 
 
 class SubScripted:
@@ -20,12 +87,18 @@ class SubScripted:
         self.element = element
         self.elements = elements
 
+    def visit(self, visitor):
+        visitor.visit_sub_scripted(self)
+
 
 class Fraction:
     def __init__(self, header, up, down):
         self.header = header
         self.up = up
         self.down = down
+
+    def visit(self, visitor):
+        visitor.visit_fraction(self)
 
 
 class MathChoice:
@@ -35,6 +108,9 @@ class MathChoice:
         self.text = text
         self.script = script
         self.script_script = script_script
+
+    def visit(self, visitor):
+        visitor.visit_math_choice(self)
 
 
 def iter_elements(lines):
