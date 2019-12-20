@@ -136,10 +136,10 @@ def iter_elements(lines):
     while True:
         line1 = next(lines, None)
 
-        if line1 and line1.startswith(b'\\\\'):
+        if line0.startswith(b'\\fraction'):
             element = Fraction(
                 line0,
-                list(iter_elements(iter_while_first_equals())),
+                list(iter_elements(assert_iter_while_first_equals(b'\\'))),
                 list(iter_elements(assert_iter_while_first_equals(b'/')))
             )
         elif not line1 or line1.startswith((b'^', b'_', b'\\', b'/')):
