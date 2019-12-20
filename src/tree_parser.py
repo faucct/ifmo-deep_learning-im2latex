@@ -180,4 +180,5 @@ def iter_tree_lines(lines):
         else:
             if line.endswith(b' \n') and not line.endswith(b'  \n'):
                 assert next(lines) == b'\n'
+                line += b'\n'
             tree.append(line)
