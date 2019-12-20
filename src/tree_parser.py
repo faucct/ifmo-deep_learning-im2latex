@@ -70,7 +70,7 @@ class Symbol(Element):
     symbol: bytes
 
     def visit(self, visitor):
-        visitor.visit_symbol(self)
+        return visitor.visit_symbol(self)
 
 
 @dataclass(frozen=True)
@@ -79,7 +79,7 @@ class WithChildren(Element):
     children: List[Element]
 
     def visit(self, visitor):
-        visitor.visit_with_children(self)
+        return visitor.visit_with_children(self)
 
 
 @dataclass(frozen=True)
@@ -88,7 +88,7 @@ class SuperScripted(Element):
     elements: List[Element]
 
     def visit(self, visitor):
-        visitor.visit_super_scripted(self)
+        return visitor.visit_super_scripted(self)
 
 
 @dataclass(frozen=True)
@@ -97,7 +97,7 @@ class SubScripted(Element):
     elements: List[Element]
 
     def visit(self, visitor):
-        visitor.visit_sub_scripted(self)
+        return visitor.visit_sub_scripted(self)
 
 
 @dataclass(frozen=True)
@@ -107,7 +107,7 @@ class Fraction(Element):
     down: List[Element]
 
     def visit(self, visitor):
-        visitor.visit_fraction(self)
+        return visitor.visit_fraction(self)
 
 
 @dataclass(frozen=True)
@@ -119,7 +119,7 @@ class MathChoice(Element):
     script_script: List[Element]
 
     def visit(self, visitor):
-        visitor.visit_math_choice(self)
+        return visitor.visit_math_choice(self)
 
 
 def iter_elements(lines):
