@@ -34,7 +34,7 @@ class SequencingVisitor(Visitor):
 
 
 def elements_to_sequence(elements):
-    return SequencingVisitor().visit_list(elements)
+    return list(SequencingVisitor().visit_list(elements))
 
 
 def elements_from_sequence(sequence):
