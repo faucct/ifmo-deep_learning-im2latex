@@ -65,16 +65,15 @@ class AttentionCell(keras.layers.Layer):
 
 
 class TrainingSequence(keras.utils.Sequence):
-    def __init__(self, image_id_and_sequence, token_encoder):
+    def __init__(self, image_path_and_sequence, token_encoder):
         self.data_frame_iterator = keras_preprocessing.image.dataframe_iterator.DataFrameIterator(
             pd.DataFrame(
                 [
-                    [image_id, list(token_encoder.transform(['SOS'] + sequence))]
-                    for image_id, sequence in image_id_and_sequence
+                    [image_path, list(token_encoder.transform(['SOS'] + sequence))]
+                    for image_path, sequence in image_path_and_sequence
                 ],
                 columns=('filename', 'class'),
             ),
-            directory='tmp/formula_images/',
             image_data_generator=ImageDataGenerator(
                 rescale=1. / 255,
             ),
@@ -82,7 +81,7 @@ class TrainingSequence(keras.utils.Sequence):
             dtype='uint8',
             color_mode='grayscale',
         )
-        self.max_sequence_length = max(len(sequence) for image_id, sequence in image_id_and_sequence)
+        self.max_sequence_length = max(len(sequence) for image_path, sequence in image_path_and_sequence)
         self.token_encoder = token_encoder
 
     def __len__(self):
