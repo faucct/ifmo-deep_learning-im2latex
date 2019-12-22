@@ -74,7 +74,7 @@ class TrainingSequence(keras.utils.Sequence):
                 ],
                 columns=('filename', 'class'),
             ),
-            directory='../tmp/formula_images/',
+            directory='tmp/formula_images/',
             image_data_generator=ImageDataGenerator(
                 rescale=1. / 255,
             ),
