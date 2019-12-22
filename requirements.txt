@@ -1,5 +1,6 @@
 keras
 git+git://github.com/faucct/keras-transformer#egg=keras_transformer
 pandas
+Pillow
 plaidml-keras
 sklearn

@@ -5,7 +5,7 @@ class SequencingVisitor(Visitor):
     def visit_list(self, elements):
         for element in elements:
             yield from element.visit(self)
-        yield b'END'
+        yield b'list_end'
 
     def visit_symbol(self, symbol):
         yield b'symbol:' + symbol.symbol
@@ -59,6 +59,6 @@ def elements_from_sequence(sequence):
         else:
             raise Exception(token)
 
-    while token != b'END':
+    while token != b'list_end':
         yield element()
         token = next(sequence)
