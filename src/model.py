@@ -19,7 +19,7 @@ def images_seq(image):
         keras.layers.Conv2D(512, 3, strides=1, padding='VALID', activation='relu'),
         keras_transformer.position.AddPositionalEncoding(),
         keras.layers.Reshape((-1, 512)),
-    ])(image)
+    ])(keras.backend.cast(image, 'float32'))
 
 
 class AttentionCell(keras.layers.Layer):
