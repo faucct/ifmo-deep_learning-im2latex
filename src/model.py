@@ -100,5 +100,5 @@ class TrainingSequence(keras.utils.Sequence):
         )
         return (
             [images, padded[:, :-1]],
-            keras.utils.to_categorical(padded[:, 1:], len(self.token_encoder.classes_)),
+            padded[:, 1:],
         )
