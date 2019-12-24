@@ -39,6 +39,9 @@ class AttentionCell(keras.layers.Layer):
     def build(self, input_shape):
         self.cell.build((input_shape[0], input_shape[1] + 512))
 
+    def get_config(self):
+        return dict(cell=self.cell, seq=self.seq, vocabulary_size=self.output_size)
+
     def call(self, inputs, attention_state):
         """
         Args:
